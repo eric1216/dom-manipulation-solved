@@ -38,3 +38,59 @@
  */
 
 // Your code goes here...
+const container = document.querySelector('.cardsContainer');
+
+// crete local storage array
+// if it already exists, call it
+const storedArray = localStorage.getItem('favsArrKey');
+let favsArr = storedArray ? JSON.parse(storedArray) : [];
+
+// add red background to items from favorite array
+const addBackground = () => {
+  const cards = container.querySelectorAll('.card');
+
+  cards.forEach((item) => {
+    if (favsArr.includes(item.id)) {
+      item.style.backgroundColor = 'red';
+    } else {
+      item.removeAttribute('style');
+    }
+  });
+};
+
+addBackground();
+
+// add items to favorites list
+const addToFavorites = (id) => {
+  if (!favsArr.includes(id)) {
+    favsArr.push(id);
+  }
+
+  localStorage.setItem('favsArrKey', JSON.stringify(favsArr));
+};
+
+// remove items from favorites list
+const removeFromFavorites = (id) => {
+  const idIndex = favsArr.indexOf(id);
+  favsArr.splice(idIndex, 1);
+
+  localStorage.setItem('favsArrKey', JSON.stringify(favsArr));
+};
+
+// on click call back
+const callBackFun = (e) => {
+  const card = e.target;
+
+  if (Array.from(card.classList).includes('card')) {
+    if (!favsArr.includes(card.id)) {
+      addToFavorites(card.id);
+    } else if (favsArr.includes(card.id)) {
+      removeFromFavorites(card.id);
+    }
+  }
+
+  addBackground();
+};
+
+// add eventListener to container
+container.addEventListener('click', callBackFun);

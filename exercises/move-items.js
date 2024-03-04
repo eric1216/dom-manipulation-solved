@@ -2,7 +2,7 @@
  * SORTING NODES WITHIN A CONTAINER
  * Please, make sure to read the following files in the exercises-info folder before you start
  * * 01 SelectNodes.md
-*/
+ */
 
 /**
  * @task
@@ -12,8 +12,7 @@
  */
 
 // Your code goes here...
-
-
+const allItems = document.querySelectorAll('.item');
 
 /**
  * @task
@@ -23,8 +22,7 @@
  * */
 
 // Your code goes here
-
-
+const main = document.getElementById('main');
 
 /**
  * @task
@@ -35,7 +33,7 @@
 
 // Your code goes here
 
-
+const favs = document.getElementById('favs');
 
 /**
  * @task
@@ -47,8 +45,21 @@
  */
 
 // Your code goes here
+const fullHeart = 'fa-heart-circle-plus';
+const brokenHeart = 'fa-heart-crack';
 
+const updateCollections = (id, direction) => {
+  const itemToMove = document.getElementById(id);
+  const icon = itemToMove.querySelector('i');
 
+  if (direction === 'toFavs') {
+    favs.appendChild(itemToMove);
+    icon.classList.replace(fullHeart, brokenHeart);
+  } else if (direction === 'toMain') {
+    main.appendChild(itemToMove);
+    icon.classList.replace(brokenHeart, fullHeart);
+  }
+};
 
 /**
  * @task
@@ -65,5 +76,12 @@
  */
 
 // Your code goes here...
+for (const item of allItems) {
+  item.addEventListener('click', () => {
+    const location = item.parentElement.id;
+    const itemId = item.id;
+    const direction = location === 'main' ? 'toFavs' : 'toMain';
 
-
+    updateCollections(itemId, direction);
+  });
+}
